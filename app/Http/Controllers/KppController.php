@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Imports\SketImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Sket;
 
 class KppController extends Controller
@@ -26,11 +28,11 @@ class KppController extends Controller
             'penerima' => 'required',
             'tanggal' => 'required',
             'nominal' => 'required'
-        ],[
+        ], [
             'nama.required' => 'Nama harus diisi',
             'npwp.required' => 'NPWP harus diisi',
             'no_sket.required' => 'Nomor SKET harus diisi',
-            'no_sket.unique' => 'Nomor SKET '.$req->no_sket.' sudah diinputkan',
+            'no_sket.unique' => 'Nomor SKET ' . $req->no_sket . ' sudah diinputkan',
             'penerima.required' => 'Penerima Hak harus diisi',
             'tanggal.required' => 'Tanggal harus diisi',
             'nominal.required' => 'Nominal harus diisi'
@@ -52,7 +54,8 @@ class KppController extends Controller
         }
     }
 
-    function batalsket(){
+    function batalsket()
+    {
         return view('kpp.pages.batalsket');
     }
 
@@ -70,5 +73,29 @@ class KppController extends Controller
             'status' => 'batal'
         ]);
         return redirect('/kpp/batal/sket')->with('berhasil', 'SKET berhasil dibatalkan');
+    }
+
+    function download()
+    {
+        $file = public_path() . "/template/template.xlsx";
+        $headers = array('Content-Type: application/pdf',);
+        return response()->download($file, 'template.xlsx', $headers);
+    }
+
+    function importexcel(Request $req)
+    {
+        $req->validate([
+			'sket' => 'required|mimes:csv,xls,xlsx'
+		],[
+            'sket.required' => 'Pilih file terlebih dahulu',
+            'sket.mimes' => 'Format file tidak sesuai, format : csv, xls, xlsx'
+        ]);
+ 
+		// menangkap file excel
+		$file = $req->file('sket');
+
+        Excel::import(new SketImport, $file);
+        
+        return redirect('/kpp/form/sket')->with('berhasil', 'Import data SKET Berhasil!');
     }
 }

@@ -28,6 +28,32 @@
 </head>
 
 <body>
+    <div class="modal fade" id="modalsertif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Sertifikat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('post.sertifikat') }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" class="form-control" name="id" id="idsket">
+                        <div class="form-group">
+                            <label for="">Nomor Sertifikat</label>
+                            <input type="text" class="form-control" name="no_sertifikat" placeholder="Masukkan nomor sertifikat" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Terbitkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="app">
         <div class="main-wrapper">
             <div class="navbar-bg"></div>
@@ -157,7 +183,7 @@
                                 '<tr>' +
                                 '<td>Nominal</td>' +
                                 '<td> : </td>' +
-                                '<td>' + json.nominal + '</td>' +
+                                '<td>' + json.nominal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</td>' +
                                 '</tr>' +
                                 '<tr>' +
                                 '<td>Status</td>' +
@@ -165,17 +191,22 @@
                                 '<td style="text-transform:capitalize">' + json.status + '</td>' +
                                 '</tr>' +
                                 '</table>' +
-                                '<div class="form-group mt-3" style="text-align:center">'+
-                                '<a href="../post/gunakan/sket/'+json.id+'" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Terbitkan Sertifikat</a>'
-                                '</div>'+
-                                '</div>'+
-                                '<div class="col-lg-3"></div>';
+                                '<div class="form-group mt-3" style="text-align:center">' +
+                                '<button onclick="terbitSertifikat(' + json.id + ')" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Terbitkan Sertifikat</button>'
+                            '</div>' +
+                            '</div>' +
+                            '<div class="col-lg-3"></div>';
                             $('#hasil').html(ins);
                             console.log(json);
                         }
                     }
                 });
             }
+        }
+
+        function terbitSertifikat(param) {
+            $('#idsket').val(param);
+            $('#modalsertif').modal('show');
         }
     </script>
 

@@ -11,5 +11,5 @@ class Sket extends Model
 
     protected $table = 'sket';
 
-    protected $fillable = ['nama','npwp','no_sket','penerima_hak','tanggal','nominal','status'];
+    protected $fillable = ['nama','npwp','no_sket','penerima_hak','tanggal','nominal','status', 'no_sertifikat'];
 }

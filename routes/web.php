@@ -51,12 +51,15 @@ Route::group(['middleware' => 'auth:kpp', 'prefix' => 'kpp'], function () {
     Route::get('/batal/sket', [KppController::class, 'batalsket'])->name('batal.sket');
     Route::get('/post/batal/sket/{id}', [KppController::class, 'postbatalsket'])->name('do.batal.sket');
     Route::post('/post/sket', [KppController::class, 'postsket'])->name('post.sket');
+    Route::post('/impport/excel', [KppController::class, 'importexcel'])->name('import.excel');
+    Route::get('/download/template', [KppController::class, 'download'])->name('download.template');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout.kpp');
 });
 
 Route::group(['middleware' => 'auth:bpn', 'prefix' => 'bpn'], function(){
     Route::get('/dashboard', [BpnController::class, 'index'])->name('home.bpn');
     Route::get('/gunakan/sket', [BpnController::class, 'formsket'])->name('gunakan.sket');
-    Route::get('/post/gunakan/sket/{id}', [BpnController::class, 'gunakansket'])->name('do.gunakan.sket');
+    // Route::get('/post/gunakan/sket/{id}', [BpnController::class, 'gunakansket'])->name('do.gunakan.sket');
+    Route::post('/post/sertifikat', [BpnController::class, 'postsertifikat'])->name('post.sertifikat');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout.bpn');
 });

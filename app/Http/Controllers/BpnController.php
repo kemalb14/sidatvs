@@ -23,12 +23,20 @@ class BpnController extends Controller
         return response()->json($data);
     }
 
-    function gunakansket($param)
+    function postsertifikat(Request $req)
     {
-        Sket::findOrFail($param);
+        Sket::findOrFail($req->id);
 
-        Sket::where('id', $param)->update([
-            'status' => 'sudah digunakan'
+        $req->validate([
+            'no_sertifikat' => 'required|unique:sket',
+        ],[
+            'no_sertifikat.required' => 'Nomor sertifikat harus diisi',
+            'no_sertifikat.unique' => 'Nomor sertifikat sudah digunakan'
+        ]);
+
+        Sket::where('id', $req->id)->update([
+            'status' => 'sudah digunakan',
+            'no_sertifikat' => $req->no_sertifikat
         ]);
         return redirect('/bpn/gunakan/sket')->with('berhasil', 'SKET berhasil diterbitkan');
     }

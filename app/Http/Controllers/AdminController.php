@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Petugas_Kpp;
 use App\Models\Petugas_Bpn;
+use App\Models\Sket;
 use Hash;
 
 class AdminController extends Controller
 {
     function index()
     {
-        return view('admin.pages.home');
+        $data['sket'] = Sket::all();
+        return view('admin.pages.home', $data);
     }
 
     function listkpp()

@@ -22,6 +22,7 @@ class CreateSket extends Migration
             $table->string('tanggal');
             $table->string('nominal');
             $table->string('status');
+            $table->string('no_sertifikat')->nullable();
             $table->timestamps();
         });
     }
